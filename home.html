@@ -1,0 +1,117 @@
+<!DOCTYPE html> <!-- // Menentukan dokumen HTML5 -->
+<html lang="id"> <!-- // Bahasa dokumen: Indonesia -->
+<head>
+  <meta charset="UTF-8" /> <!-- // Mendukung karakter Unicode -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- // Responsif di perangkat mobile -->
+  <title>Biblioffee - Home</title> <!-- // Judul halaman di tab browser -->
+
+  <!-- // Mengimpor ikon dari Font Awesome -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+  <!-- // Mengimpor font 'Poppins' dari CDN -->
+  <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet"/>
+
+  <style>
+    * {
+      margin: 0;                      // Reset margin default
+      padding: 0;                     // Reset padding default
+      box-sizing: border-box;        // Hitung padding dan border dalam ukuran elemen
+      font-family: 'Poppins', sans-serif; // Gunakan font Poppins
+    }
+
+    body {
+      background-image: url('https://i.imgur.com/icF4fdD.jpeg'); // Gambar latar belakang
+      background-size: cover;        // Latar menutupi seluruh area
+      color: #fff;                   // Warna teks putih
+      min-height: 100vh;             // Tinggi minimal layar penuh
+      display: flex;                 // Gunakan flexbox
+      flex-direction: column;       // Arah vertikal
+      justify-content: center;      // Konten di tengah vertikal
+      align-items: center;          // Konten di tengah horizontal
+      padding: 20px;                // Padding sekeliling
+      text-align: center;           // Teks rata tengah
+    }
+
+    header {
+      position: fixed;              // Tetap di atas saat scroll
+      top: 0; left: 0; right: 0;    // Lebar penuh atas
+      background-color: rgba(70, 35, 6, 0.8); // Warna latar transparan cokelat
+      padding: 15px 30px;           // Padding atas-bawah dan kiri-kanan
+      font-weight: bold;            // Teks tebal
+      font-size: 1.5rem;            // Ukuran font besar
+      color: #fff;                  // Warna teks putih
+      user-select: none;            // Tidak bisa diseleksi
+      z-index: 100;                 // Prioritas tinggi (di atas elemen lain)
+    }
+
+    main {
+      max-width: 700px;             // Maksimal lebar konten
+      background-color: rgba(70, 38, 8, 0.75); // Latar cokelat transparan
+      padding: 30px;                // Padding dalam konten
+      border-radius: 15px;          // Sudut membulat
+      box-shadow: 0 0 20px #d9dbd5; // Bayangan kotak
+      margin-top: 100px;            // Jarak dari header
+
+      /* Animasi fade-in slide-up */
+      opacity: 0;                   // Awalnya transparan
+      transform: translateY(30px);  // Geser ke bawah 30px
+      animation: fadeInUp 0.7s ease forwards; // Jalankan animasi ke atas dan munculkan
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;                 // Awalnya tidak terlihat
+        transform: translateY(30px); // Dari bawah
+      }
+      to {
+        opacity: 1;                 // Muncul penuh
+        transform: translateY(0);   // Geser ke posisi normal
+      }
+    }
+
+    h1 {
+      margin-bottom: 20px;          // Jarak bawah
+      font-size: 2.8rem;            // Ukuran besar untuk judul
+      text-shadow: 1px 1px 5px #000; // Bayangan teks agar kontras
+    }
+
+    p {
+      font-size: 1.2rem;            // Ukuran sedang
+      line-height: 1.6;             // Spasi antar baris
+      text-shadow: 1px 1px 3px #000; // Bayangan teks
+    }
+
+    .btn-login {
+      margin-top: 30px;             // Jarak atas
+      background-color: #05190A;    // Warna dasar hijau tua
+      color: #fff;                  // Teks putih
+      padding: 12px 30px;           // Ukuran dalam tombol
+      font-size: 1.1rem;            // Ukuran teks tombol
+      border: none;                 // Tanpa border
+      border-radius: 50px;          // Bentuk bulat
+      cursor: pointer;              // Kursor tangan saat diarahkan
+      font-weight: 600;             // Teks tebal
+      box-shadow: 0 0 15px #a09b82; // Efek bayangan
+      transition: background-color 0.3s ease; // Efek halus saat hover
+      text-decoration: none;        // Hilangkan garis bawah
+      display: inline-block;        // Agar bisa diberi padding
+    }
+
+    .btn-login:hover {
+      background-color: #88cad6;    // Warna berubah saat hover
+    }
+  </style>
+</head>
+
+<body>
+  <header>BIBLIOFFEE</header> <!-- // Bagian header tetap di atas -->
+
+  <main>
+    <h1>Secangkir Cerita, Sepenuh Rasa</h1> <!-- // Judul utama -->
+    <p>
+      Selamat datang di BIBLIOFFEE, tempat di mana setiap tegukan kopi bukan sekadar minuman, tapi perjalanan rasa, momen refleksi, dan percakapan hangat.
+      <!-- // Deskripsi singkat dan emosional -->
+    </p>
+    <a href="login.html?popup=login" class="btn-login">Nikmati Sekarang</a> <!-- // Tombol untuk menuju halaman login -->
+  </main>
+</body>
+</html>

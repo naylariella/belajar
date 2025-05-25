@@ -1,0 +1,263 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" /> <!-- Set karakter encoding ke UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsive design -->
+  <title>Biblioffee - Dashboard</title> <!-- Judul halaman -->
+  <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet" /> <!-- Import font Poppins -->
+  <style>
+    * {
+      margin: 0; /* Hilangkan margin default */
+      padding: 0; /* Hilangkan padding default */
+      box-sizing: border-box; /* Border dan padding dihitung di dalam ukuran elemen */
+      font-family: 'Poppins', sans-serif; /* Set font default */
+    }
+    body {
+      background: #815942; /* Warna background coklat */
+      color: #fff; /* Warna teks putih */
+      min-height: 100vh; /* Minimal tinggi layar penuh */
+      padding: 20px; /* Padding sekitar body */
+    }
+    header {
+      background-color: #805c44; /* Background header */
+      padding: 15px 30px; /* Padding dalam header */
+      display: flex; /* Flexbox untuk layout */
+      justify-content: space-between; /* Space antar item */
+      align-items: center; /* Vertical align center */
+      position: fixed; /* Posisi fixed agar selalu di atas */
+      top: 0; left: 0; right: 0; /* Penuhi bagian atas layar */
+      z-index: 100; /* Agar header selalu di atas elemen lain */
+      font-weight: bold; /* Bold font */
+      font-size: 1.4rem; /* Ukuran font */
+    }
+    .cart-icon {
+      position: relative; /* Posisi relative untuk badge */
+      cursor: pointer; /* Cursor pointer saat hover */
+    }
+    .cart-count {
+      position: absolute; /* Posisi absolute untuk badge */
+      top: -8px; /* Posisi atas */
+      right: -10px; /* Posisi kanan */
+      background: red; /* Background merah */
+      color: white; /* Teks putih */
+      border-radius: 50%; /* Bentuk bulat */
+      font-size: 0.75rem; /* Ukuran font kecil */
+      padding: 2px 6px; /* Padding kecil */
+    }
+    main {
+      margin-top: 90px; /* Jarak dari atas (header) */
+      max-width: 900px; /* Maksimal lebar konten */
+      margin-left: auto; /* Center horizontal */
+      margin-right: auto; /* Center horizontal */
+      padding-bottom: 120px; /* Jarak bawah untuk ruang */
+    }
+    h1 {
+      margin-bottom: 30px; /* Jarak bawah judul */
+      text-align: center; /* Center teks */
+      font-size: 2.5rem; /* Ukuran font besar */
+      color: #c8f1d7; /* Warna hijau muda */
+      text-shadow: 0 0 10px #01020ef1; /* Efek bayangan teks */
+    }
+    .coffee-list {
+      display: grid; /* Layout grid */
+      grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); /* Responsive kolom */
+      gap: 25px; /* Jarak antar grid item */
+    }
+    .coffee-card {
+      background: rgba(255, 255, 255, 0.1); /* Background transparan */
+      border-radius: 15px; /* Border radius */
+      overflow: hidden; /* Sembunyikan overflow */
+      box-shadow: 0 0 15px rgba(78, 129, 105, 0.9); /* Shadow hijau */
+      transition: transform 0.3s ease; /* Animasi transform */
+      position: relative; /* Posisi relative */
+      opacity: 0; /* Mulai dengan opacity 0 untuk animasi */
+      transform: translateY(20px); /* Mulai dengan posisi turun */
+      animation: fadeInUp 0.5s forwards; /* Animasi fadeInUp */
+    }
+    @keyframes fadeInUp {
+      from {
+        opacity: 0; /* Mulai transparan */
+        transform: translateY(20px); /* Posisi turun */
+      }
+      to {
+        opacity: 1; /* Tampak penuh */
+        transform: translateY(0); /* Posisi normal */
+      }
+    }
+    .coffee-card:hover {
+      transform: scale(1.05); /* Zoom saat hover */
+      box-shadow: 0 0 20px #a8a26a; /* Shadow kuning saat hover */
+    }
+    .coffee-card img {
+      width: 100%; /* Lebar penuh */
+      height: 180px; /* Tinggi tetap */
+      object-fit: cover; /* Crop gambar sesuai container */
+      display: block; /* Tampilkan sebagai block */
+    }
+    .coffee-info {
+      padding: 15px 20px 60px; /* Padding konten */
+      position: relative; /* Posisi relatif */
+      z-index: 1; /* Agar di atas */
+    }
+    .coffee-info h3 {
+      font-size: 1.3rem; /* Ukuran font nama kopi */
+      margin-bottom: 8px; /* Jarak bawah */
+      color: #d9f7d9; /* Warna hijau muda */
+    }
+    .coffee-info p {
+      font-size: 1rem; /* Ukuran font deskripsi */
+      color: #0c0c0c; /* Warna hitam gelap */
+      margin-bottom: 12px; /* Jarak bawah */
+    }
+    .coffee-info .price {
+      font-weight: 700; /* Bold */
+      font-size: 1.1rem; /* Ukuran harga */
+      color: #0a0a0a; /* Warna hitam */
+    }
+    .add-button {
+      position: absolute; /* Posisi absolute */
+      bottom: 15px; /* Jarak dari bawah */
+      right: 15px; /* Jarak dari kanan */
+      width: 40px; /* Lebar tombol */
+      height: 40px; /* Tinggi tombol */
+      border-radius: 50%; /* Bentuk lingkaran */
+      background-color: #a1565c; /* Warna tombol */
+      color: white; /* Warna teks */
+      border: none; /* Hilangkan border */
+      font-size: 1.4em; /* Ukuran font plus */
+      font-weight: bold; /* Bold */
+      cursor: pointer; /* Pointer saat hover */
+      z-index: 10; /* Di atas elemen lain */
+    }
+    .add-button:hover {
+      background-color: #9c8394; /* Warna tombol saat hover */
+    }
+    .toast {
+      position: fixed; /* Posisi tetap */
+      bottom: 20px; /* Jarak dari bawah */
+      right: 20px; /* Jarak dari kanan */
+      background: rgba(28, 29, 29, 0.9); /* Background gelap transparan */
+      color: white; /* Warna teks putih */
+      padding: 10px 20px; /* Padding */
+      border-radius: 6px; /* Border radius */
+      opacity: 0; /* Mulai tidak terlihat */
+      transition: all 0.4s ease; /* Transisi efek */
+      z-index: 999; /* Di atas semua elemen */
+    }
+    .toast.show {
+      opacity: 1; /* Tampil */
+      bottom: 40px; /* Naik sedikit */
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div>BIBLIOFFEE</div> <!-- Logo atau nama aplikasi -->
+    <div style="display: flex; align-items: center; gap: 20px;">
+      <a href="keranjang.html" class="cart-icon">
+        🛒 <span class="cart-count" id="cartCount">0</span> <!-- Ikon keranjang dan jumlah item -->
+      </a>
+      <a href="logout.php" class="logout-btn">Logout</a> <!-- Tombol logout -->
+    </div>
+  </header>
+  <main>
+    <h1>Daftar Kopi Favorit</h1> <!-- Judul utama -->
+    <div class="coffee-list" id="coffeeList"></div> <!-- Container daftar kopi -->
+  </main>
+  <div class="toast" id="toast">Kopi ditambahkan ke keranjang!</div> <!-- Notifikasi toast -->
+
+  <script>
+    const coffeeData = [ // Data kopi berupa array objek
+      {
+        name: "Espresso", // Nama kopi
+        price: 15000, // Harga kopi
+        description: "Kopi hitam pekat dengan rasa kuat dan aroma tajam.", // Deskripsi
+        img: "https://i.imgur.com/mNk4jqN.png" // URL gambar
+      },
+      {
+        name: "Cappuccino",
+        price: 20000,
+        description: "Kopi dengan busa susu lembut dan cita rasa creamy.",
+        img: "https://i.imgur.com/Sv3fvpz.png"
+      },
+      {
+        name: "Latte",
+        price: 22000,
+        description: "Kopi dengan campuran susu panas yang lembut dan manis.",
+        img: "https://i.imgur.com/Kk01TGR.png"
+      },
+      {
+        name: "Americano",
+        price: 18000,
+        description: "Kopi hitam yang lebih encer dengan rasa halus dan ringan.",
+        img: "https://i.imgur.com/P1i86NO.png"
+      },
+      {
+        name: "Mocha",
+        price: 25000,
+        description: "Kopi dengan campuran cokelat manis dan susu yang lezat.",
+        img: "https://i.imgur.com/WFSRQhO.png"
+      },
+      {
+        name: "Caramel Macchiato",
+        price: 27000,
+        description: "Kopi creamy dengan lapisan karamel manis di atasnya.",
+        img: "https://i.imgur.com/V6tbmCm.png"
+      }
+    ];
+
+    const cartKey = 'kopiCart'; // Nama key di localStorage untuk keranjang
+    const cartCount = document.getElementById('cartCount'); // Elemen jumlah keranjang
+    const coffeeList = document.getElementById('coffeeList'); // Container daftar kopi
+    const toast = document.getElementById('toast'); // Elemen toast notifikasi
+
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem(cartKey)) || []; // Ambil data keranjang dari localStorage atau array kosong
+      cartCount.textContent = cart.length; // Tampilkan jumlah item di keranjang
+    }
+
+    function showToast(message) {
+      toast.textContent = message; // Set pesan toast
+      toast.classList.add('show'); // Tampilkan toast
+      setTimeout(() => {
+        toast.classList.remove('show'); // Sembunyikan toast setelah 2 detik
+      }, 2000);
+    }
+
+    function addToCart(item) {
+      const cart = JSON.parse(localStorage.getItem(cartKey)) || []; // Ambil data keranjang
+      cart.push(item); // Tambah item baru
+      localStorage.setItem(cartKey, JSON.stringify(cart)); // Simpan ke localStorage
+      loadCart(); // Update tampilan jumlah keranjang
+      showToast(`${item.name} ditambahkan ke keranjang!`); // Tampilkan pesan
+    }
+
+    function renderCoffees() {
+      coffeeData.forEach((coffee, index) => {
+        const div = document.createElement('div'); // Buat elemen div baru
+        div.className = 'coffee-card'; // Tambahkan kelas coffee-card
+        div.style.animationDelay = `${index * 0.1}s`; // Set delay animasi untuk efek bertahap
+
+        div.innerHTML = `
+          <img src="${coffee.img}" alt="${coffee.name}" />
+          <div class="coffee-info">
+            <h3>${coffee.name}</h3>
+            <p>${coffee.description}</p>
+            <div class="price">Rp ${coffee.price.toLocaleString('id-ID')}</div>
+          </div>
+          <button class="add-button">+</button>
+        `; // Isi konten card kopi
+
+        const btn = div.querySelector('.add-button'); // Ambil tombol tambah
+        btn.addEventListener('click', () => addToCart(coffee)); // Event klik tambah ke keranjang
+        coffeeList.appendChild(div); // Tambah card kopi ke container
+      });
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      loadCart(); // Load data keranjang saat halaman siap
+      renderCoffees(); // Render daftar kopi ke halaman
+    });
+  </script>
+</body>
+</html>

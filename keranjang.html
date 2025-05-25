@@ -1,0 +1,333 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" /> <!-- Set karakter encoding halaman ke UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Responsif untuk mobile -->
+  <title>Biblioffee - Keranjang Kopi</title> <!-- Judul halaman -->
+  <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet" /> <!-- Import font Poppins -->
+  <style>
+    /* STYLE HALAMAN */
+    body {
+      background: #815942; /* Warna latar belakang coklat kopi */
+      color: #fff; /* Warna teks putih */
+      font-family: 'Poppins', sans-serif; /* Gunakan font Poppins */
+      padding: 20px; /* Jarak dalam halaman */
+    }
+    header {
+      font-size: 1.5rem; /* Ukuran font header */
+      font-weight: bold; /* Tebal font */
+      margin-bottom: 30px; /* Jarak bawah header */
+      text-align: center; /* Tengah teks header */
+      color: #fdfcfc; /* Warna teks putih keabu-abuan */
+    }
+    .cart-list {
+      max-width: 800px; /* Maksimal lebar daftar keranjang */
+      margin: 0 auto; /* Tengah secara horizontal */
+    }
+    .cart-item {
+      display: flex; /* Gunakan flexbox agar item sejajar */
+      align-items: center; /* Vertikal rata tengah */
+      justify-content: space-between; /* Jarak antar elemen maksimal */
+      background: rgba(255,255,255,0.05); /* Background putih transparan */
+      border-radius: 10px; /* Sudut membulat */
+      margin-bottom: 15px; /* Jarak antar item */
+      padding: 15px; /* Padding dalam item */
+      box-shadow: 0 0 10px #284d63; /* Bayangan item */
+    }
+    .cart-item img {
+      width: 80px; /* Lebar gambar produk */
+      height: 80px; /* Tinggi gambar produk */
+      object-fit: cover; /* Gambar menyesuaikan ukuran */
+      border-radius: 8px; /* Sudut gambar membulat */
+      margin-right: 15px; /* Jarak kanan gambar */
+    }
+    .item-info {
+      flex-grow: 1; /* Bagian info mengisi ruang tersisa */
+    }
+    .item-info h3 {
+      font-size: 1.2rem; /* Ukuran font nama produk */
+      color: #fffdfd; /* Warna teks produk */
+    }
+    .item-info .price {
+      color: #0f0f0f; /* Warna harga item */
+      margin-top: 5px; /* Jarak atas harga */
+    }
+    .remove-btn {
+      background: transparent; /* Background tombol transparan */
+      border: none; /* Hilangkan border */
+      color: red; /* Warna tombol merah */
+      font-size: 1.3rem; /* Ukuran font tombol */
+      cursor: pointer; /* Cursor berubah saat hover */
+    }
+    .footer-bar {
+      display: flex; /* Flexbox agar item sejajar */
+      justify-content: space-between; /* Jarak maksimal antar item */
+      align-items: center; /* Vertikal rata tengah */
+      margin-top: 20px; /* Jarak atas footer */
+      max-width: 800px; /* Maksimal lebar footer */
+      margin-left: auto; /* Tengah secara horizontal */
+      margin-right: auto;
+    }
+    .total {
+      font-size: 1.3rem; /* Ukuran font total harga */
+      font-weight: bold; /* Tebal font */
+      color: #0f0f0f; /* Warna teks total */
+    }
+    .back-btn {
+      background-color: #f8f6f5; /* Background tombol kembali */
+      color: rgb(175, 85, 85); /* Warna teks tombol */
+      padding: 8px 16px; /* Padding tombol */
+      border: none; /* Hilangkan border */
+      border-radius: 30px; /* Sudut tombol membulat */
+      cursor: pointer; /* Cursor pointer */
+      font-size: 0.9rem; /* Ukuran font tombol */
+      text-decoration: none; /* Hilangkan garis bawah */
+    }
+    #checkoutBtn {
+      background: #4caf50; /* Background hijau tombol checkout */
+      color: white; /* Warna teks tombol */
+      border: none; /* Hilangkan border */
+      border-radius: 30px; /* Sudut tombol membulat */
+      padding: 8px 16px; /* Padding tombol */
+      cursor: pointer; /* Cursor pointer */
+      font-size: 0.9rem; /* Ukuran font tombol */
+      margin-left: 10px; /* Jarak kiri tombol checkout */
+    }
+    .toast {
+      position: fixed; /* Posisi fixed di layar */
+      bottom: 20px; /* Jarak dari bawah layar */
+      right: 20px; /* Jarak dari kanan layar */
+      background: #e74c3c; /* Warna merah untuk notifikasi */
+      color: white; /* Warna teks putih */
+      padding: 10px 20px; /* Padding notifikasi */
+      border-radius: 6px; /* Sudut membulat */
+      opacity: 0; /* Awalnya transparan */
+      transition: all 0.4s ease; /* Animasi transisi */
+      z-index: 999; /* Pastikan di atas elemen lain */
+    }
+    .toast.show {
+      opacity: 1; /* Saat show, tampilkan */
+      bottom: 40px; /* Geser sedikit ke atas */
+    }
+
+    /* Style rating dan ulasan */
+    #reviewSection {
+      max-width: 800px; /* Maksimal lebar section */
+      margin: 40px auto 20px; /* Jarak atas dan bawah, center horizontal */
+      background: rgba(255,255,255,0.1); /* Background transparan */
+      padding: 20px; /* Padding dalam */
+      border-radius: 10px; /* Sudut membulat */
+      color: #fff; /* Warna teks */
+    }
+    #rating .star {
+      font-size: 2rem; /* Ukuran bintang */
+      cursor: pointer; /* Pointer saat hover */
+    }
+    #reviewText {
+      width: 100%; /* Lebar textarea penuh */
+      margin-top: 15px; /* Jarak atas textarea */
+      border-radius: 8px; /* Sudut membulat */
+      padding: 10px; /* Padding textarea */
+      border: none; /* Hilangkan border */
+      resize: vertical; /* Bisa resize vertikal */
+      font-family: 'Poppins', sans-serif; /* Font sama dengan halaman */
+    }
+    #submitReview {
+      margin-top: 10px; /* Jarak atas tombol */
+      padding: 10px 20px; /* Padding tombol */
+      border: none; /* Hilangkan border */
+      background: #f8f6f5; /* Background tombol */
+      color: #6f7a7e; /* Warna teks */
+      border-radius: 30px; /* Sudut tombol membulat */
+      cursor: pointer; /* Pointer cursor */
+      font-weight: bold; /* Tebal teks */
+    }
+  </style>
+</head>
+<body>
+  <header>🛒 Keranjang Kopi</header> <!-- Judul halaman -->
+
+  <div class="cart-list" id="cartList"></div> <!-- Tempat daftar item keranjang -->
+
+  <div class="footer-bar">
+    <div class="total" id="totalHarga">Total: Rp 0</div> <!-- Tampilkan total harga -->
+    <button class="back-btn" onclick="window.history.back()">🔙 Kembali</button> <!-- Tombol kembali ke halaman sebelumnya -->
+    <button id="checkoutBtn">Checkout</button> <!-- Tombol checkout -->
+  </div>
+
+  <!-- Bagian rating dan ulasan -->
+  <div id="reviewSection">
+    <h3>Berikan Rating dan Ulasanmu</h3>
+    <div id="rating">
+      <span class="star" data-value="1">☆</span>
+      <span class="star" data-value="2">☆</span>
+      <span class="star" data-value="3">☆</span>
+      <span class="star" data-value="4">☆</span>
+      <span class="star" data-value="5">☆</span>
+    </div>
+    <textarea id="reviewText" rows="4" placeholder="Tulis ulasan kamu di sini..."></textarea>
+    <button id="submitReview">Kirim Ulasan</button>
+  </div>
+
+  <div class="toast" id="toast">Item dihapus dari keranjang</div> <!-- Notifikasi penghapusan item -->
+
+  <script>
+    // Key untuk menyimpan data keranjang di localStorage
+    const cartKey = 'kopiCart';
+
+    // Elemen DOM untuk daftar keranjang dan total harga
+    const cartList = document.getElementById('cartList');
+    const totalHarga = document.getElementById('totalHarga');
+    const toast = document.getElementById('toast');
+    const checkoutBtn = document.getElementById('checkoutBtn');
+
+    // Fungsi menampilkan toast notifikasi dengan pesan tertentu
+    function showToast(message) {
+      toast.textContent = message; // Set teks toast
+      toast.classList.add('show'); // Tambah kelas 'show' supaya muncul
+      setTimeout(() => toast.classList.remove('show'), 2000); // Hilangkan setelah 2 detik
+    }
+
+    // Fungsi loadCart: ambil data keranjang dari localStorage dan tampilkan di halaman
+    function loadCart() {
+      const cart = JSON.parse(localStorage.getItem(cartKey)) || []; // Ambil keranjang, jika kosong buat array kosong
+      cartList.innerHTML = ''; // Bersihkan daftar keranjang di DOM
+      let total = 0; // Variabel total harga
+
+      cart.forEach((item, index) => {
+        total += item.price; // Tambah harga item ke total
+
+        // Buat elemen div untuk item keranjang
+        const div = document.createElement('div');
+        div.className = 'cart-item'; // Set class css
+        div.innerHTML = `
+          <img src="${item.img}" alt="${item.name}"> <!-- Gambar produk -->
+          <div class="item-info">
+            <h3>${item.name}</h3> <!-- Nama produk -->
+            <div class="price">Rp ${item.price.toLocaleString('id-ID')}</div> <!-- Harga format rupiah -->
+          </div>
+          <button class="remove-btn" title="Hapus item">🗑️</button> <!-- Tombol hapus -->
+        `;
+
+        // Event klik tombol hapus item
+        div.querySelector('.remove-btn').addEventListener('click', () => {
+          cart.splice(index, 1); // Hapus item dari array keranjang
+          localStorage.setItem(cartKey, JSON.stringify(cart)); // Update localStorage
+          loadCart(); // Reload daftar keranjang
+          showToast(`${item.name} dihapus dari keranjang`); // Tampilkan notifikasi
+        });
+
+        cartList.appendChild(div); // Tambah elemen item ke DOM
+      });
+
+      totalHarga.textContent = `Total: Rp ${total.toLocaleString('id-ID')}`; // Update total harga di halaman
+    }
+
+    // Jalankan loadCart saat halaman selesai dimuat
+    document.addEventListener('DOMContentLoaded', loadCart);
+
+    // Event klik tombol checkout
+    checkoutBtn.addEventListener('click', () => {
+      const cart = JSON.parse(localStorage.getItem(cartKey)) || []; // Ambil keranjang dari localStorage
+      if (cart.length === 0) {
+        alert('Keranjang kosong, tambahkan dulu produk ya!'); // Jika kosong, beri peringatan
+        return; // Hentikan proses
+      }
+
+      // Kirim data keranjang ke server via POST ke checkout.php
+      fetch('checkout.php', {
+        method: 'POST', // Metode POST
+        headers: {
+          'Content-Type': 'application/json' // Format data JSON
+        },
+        body: JSON.stringify({ cart }) // Kirim data keranjang
+      })
+      .then(res => res.json()) // Ubah respon ke JSON
+      .then(data => {
+        if (data.success) { // Jika checkout berhasil
+          alert('Checkout berhasil! Terima kasih sudah memesan.');
+          localStorage.removeItem(cartKey); // Kosongkan keranjang
+          loadCart(); // Refresh tampilan keranjang
+        } else {
+          alert('Checkout gagal: ' + data.message); // Jika gagal, tampilkan pesan error
+        }
+      })
+      .catch(err => {
+        alert('Terjadi kesalahan: ' + err.message); // Tangani error fetch
+      });
+    });
+
+    // Bagian rating dan ulasan
+    const stars = document.querySelectorAll('#rating .star'); // Semua elemen bintang rating
+    const reviewText = document.getElementById('reviewText'); // Textarea ulasan
+    const submitBtn = document.getElementById('submitReview'); // Tombol submit review
+    let selectedRating = 0; // Variabel menyimpan rating yang dipilih
+
+    // Event mouse enter, leave, dan click untuk bintang rating
+    stars.forEach(star => {
+      star.addEventListener('mouseenter', () => {
+        const val = star.getAttribute('data-value'); // Ambil nilai rating bintang
+        highlightStars(val); // Highlight bintang sesuai hover
+      });
+      star.addEventListener('mouseleave', () => {
+        highlightStars(selectedRating); // Kembalikan highlight sesuai rating terpilih
+      });
+      star.addEventListener('click', () => {
+        selectedRating = star.getAttribute('data-value'); // Set rating saat klik
+        highlightStars(selectedRating); // Highlight bintang sesuai rating
+      });
+    });
+
+    // Fungsi highlight bintang berdasarkan rating yg diberikan
+    function highlightStars(rating) {
+      stars.forEach(s => {
+        if (s.getAttribute('data-value') <= rating) {
+          s.textContent = '⭐'; // Ganti jadi bintang penuh
+          s.style.color = 'gold'; // Warna emas
+        } else {
+          s.textContent = '☆'; // Bintang kosong
+          s.style.color = '#ccc'; // Warna abu-abu
+        }
+      });
+    }
+
+    // Event klik tombol submit review
+    submitBtn.addEventListener('click', () => {
+      if (selectedRating == 0) {
+        alert('Pilih dulu rating bintangnya ya!'); // Validasi rating harus dipilih
+        return;
+      }
+      if (reviewText.value.trim() === '') {
+        alert('Tulis dulu ulasan kamu ya!'); // Validasi isi ulasan tidak kosong
+        return;
+      }
+
+      // Kirim data review ke server
+      fetch('submit_review.php', {
+        method: 'POST', // POST method
+        headers: {
+          'Content-Type': 'application/json' // Format JSON
+        },
+        body: JSON.stringify({
+          rating: selectedRating, // Rating yg dipilih
+          review: reviewText.value.trim() // Isi ulasan
+        })
+      })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          alert('Terima kasih atas ulasanmu!'); // Jika sukses
+          selectedRating = 0; // Reset rating
+          reviewText.value = ''; // Kosongkan textarea
+          highlightStars(0); // Reset bintang
+        } else {
+          alert('Gagal mengirim ulasan: ' + data.message); // Jika gagal kirim
+        }
+      })
+      .catch(err => {
+        alert('Terjadi kesalahan: ' + err.message); // Error jaringan dll
+      });
+    });
+  </script>
+</body>
+</html>

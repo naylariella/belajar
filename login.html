@@ -1,0 +1,486 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" /> <!-- set karakter encoding -->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" /> <!-- responsif untuk perangkat mobile -->
+  <title>Biblioffee - Login</title> <!-- judul halaman -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/> <!-- font awesome icons -->
+  <link href="https://fonts.cdnfonts.com/css/poppins" rel="stylesheet"/> <!-- font Poppins -->
+  <style>
+    /* reset dan set font global */
+    *{
+        padding: 0; /* hilangkan padding default */
+        margin: 0; /* hilangkan margin default */
+        box-sizing: border-box; /* box sizing agar padding masuk hitungan ukuran */
+        font-family: 'Poppins', sans-serif; /* set font */
+    }
+    body {
+        display: flex; /* flex container */
+        justify-content: center; /* horizontal center */
+        align-items: center; /* vertical center */
+        min-height: 100vh; /* tinggi minimal 100% viewport */
+        background-image: url('https://i.imgur.com/icF4fdD.jpeg'); /* gambar latar */
+        background-size: cover; /* biar penuh */
+        background-position: center; /* posisi tengah */
+    }
+        
+    header{
+        background-color:#805c44; /* warna background */
+        position: fixed; /* posisi tetap di atas */
+        top: 0; /* atas 0 */
+        left: 0; /* kiri 0 */
+        width: 100%; /* full lebar */
+        padding: 20px 100px; /* padding atas-bawah 20, kiri-kanan 100 */
+        backdrop-filter: blur(10px); /* blur background */
+        display: flex; /* flex container */
+        justify-content: space-between; /* space antar item */
+        align-items: center; /* vertikal center */
+        z-index: 99; /* lapisan atas */
+
+        /* tampilan fallback jika flex tidak diterapkan */
+        display: block;
+        list-style-type: disc;
+        margin-block-end: 1em;
+        margin-inline-start: 0px;
+        margin-inline-end: 0px;
+        padding-inline-start: 40px;
+
+    }
+    header .navigation ul {
+        float: right; /* mengapungkan ke kanan */
+        margin-right: 20px; /* margin kanan */
+    }
+
+    header .navigation ul li {
+        display: inline-block; /* horizontal list */
+        line-height: 50px; /* tinggi baris */
+        margin: 0 5px; /* margin kiri-kanan */
+    }
+
+    header .navigation ul li a {
+        position: relative; /* untuk pseudo element */
+        font-size: 1.1em; /* ukuran font */
+        color: #fff; /* warna teks putih */
+        text-decoration: none; /* hilangkan underline */
+        font-weight: 500; /* ketebalan font */
+        margin-left: 40px; /* margin kiri */
+        padding: 7px 13px; /* padding */
+        border-radius: 3px; /* sudut membulat */
+        text-transform: uppercase; /* huruf kapital */
+    }
+
+    header .navigation ul li a::after {
+        content: ''; /* kosong */
+        position: absolute; /* posisi absolut */
+        left: 0; /* kiri 0 */
+        bottom: -6px; /* bawah -6px */
+        width: 100%; /* lebar penuh */
+        height: 3px; /* tinggi 3px */
+        border-radius: 5px; /* sudut membulat */
+        transform-origin: 50% 50%; /* asal transformasi */
+        transform: scaleX(0); /* skala X 0 (tersembunyi) */
+        transition: transform .5s; /* transisi transform */
+        box-shadow: 0 0 10px rgba(255, 255, 255, 0.8); /* shadow putih */
+        background: linear-gradient(to right, #fff, #f3f3f3); /* gradien */
+    }
+
+    header .navigation ul li a:hover::after{
+        transform-origin: right; /* asal transform kanan */
+        transform: scalex(1); /* skala X penuh */
+    }
+        
+    header .navigation ul li .btnLogin-popup {
+        width: 130px; /* lebar tombol */
+        height: 50px; /* tinggi tombol */
+        background: transparent; /* background transparan */
+        border: 2px solid #fff; /* border putih */
+        outline: none; /* hilangkan outline */
+        border-radius: 6px; /* sudut membulat */
+        cursor: pointer; /* pointer cursor */
+        font-size: 1.1em; /* ukuran font */
+        color: #fff; /* warna teks putih */
+        font-weight: 500; /* ketebalan font */
+        margin-left: 40px; /* margin kiri */
+    }
+    header .navigation ul li .btnLogin-popup:hover {
+        background-color: #05190A; /* background saat hover */
+        color: #fff; /* warna teks */
+    }
+
+    ul li a.active, ul li a:hover{
+        background: #05190A; /* background saat aktif/hover */
+        transition: .5s; /* transisi */
+    }
+
+    .check_btn{
+        font-size: 25px; /* ukuran font */
+        color: white; /* warna putih */
+        float: left; /* float kiri */
+        line-height: 50px; /* tinggi baris */
+        margin-right: 10px; /* margin kanan */
+        cursor: pointer; /* pointer cursor */
+        display: none; /* sembunyikan default */
+    }
+    #check{
+        display: none; /* sembunyikan checkbox */
+    }
+
+    @media(max-width:858px){
+        .check_btn{
+            display: block; /* tampilkan tombol burger menu */
+        }
+        ul{
+            position: fixed; /* posisi fixed */
+            width: 50%; /* lebar setengah */
+            height: 70vh; /* tinggi 70% viewport */
+            background: rgba(88, 82, 53, 0.9); /* background semi transparan */
+            top: 100px; /* jarak atas 100px */
+            left: -100%; /* start di luar layar kiri */
+            text-align: left; /* rata kiri */
+            transition: all .5s; /* transisi */
+            border: 2px solid #c9c8c8; /* border abu */
+            border-radius: 6px; /* sudut membulat */
+            box-shadow: 0 0 30px rgba(0, 0, 0.5); /* bayangan */
+        }
+        header .navigation ul li{
+            display: block; /* vertikal */
+            margin: 50px 0; /* margin atas bawah */
+            line-height: 30px; /* tinggi baris */
+        }
+        header .navigation ul li a{
+            font-size: 20px; /* font lebih besar */
+        }
+        #check:checked ~ ul{
+            left: 0; /* geser menu ke posisi normal */
+        }
+    }
+
+    /* logo */
+    .logo{
+        color: white; /* warna putih */
+        user-select: none; /* disable seleksi teks */
+        font-size: 25px; /* ukuran font */
+        line-height: 50px; /* tinggi baris */
+        padding: 0 10px; /* padding kiri kanan */
+        font-family: 'poppins', sans-serif; /* font */
+        font-weight: bold; /* tebal */
+    }
+
+    /* popup box utama */
+    .cover_box{
+        position: relative; /* posisi relatif */
+        width: 400px; /* lebar */
+        height: 440px; /* tinggi */
+        background: transparent; /* background transparan */
+        border: 2px solid #c9c8c8; /* border abu */
+        border-radius: 20px; /* sudut membulat */
+        backdrop-filter: blur(20px); /* blur background */
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.5); /* bayangan */
+        display: flex; /* flex container */
+        justify-content: center; /* horizontal center */
+        align-items: center; /* vertikal center */
+        transform: scale(0); /* skala 0 (tersembunyi) */
+        overflow: hidden; /* sembunyikan overflow */
+        opacity: 0; /* transparan */
+      transition: transform 0.5s ease, opacity 0.5s ease; /* transisi */
+    }
+    .cover_box:hover {
+        border-color: #fff; /* border putih saat hover */
+        animation: border-glow 1s infinite alternate; /* animasi glowing border */
+    }
+
+    @keyframes border-glow {
+        from {
+            border-color: #f6f8f6; /* warna border mulai */
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.5); /* shadow mulai */
+        }
+        to {
+            border-color: #ffffff; /* warna border akhir */
+            box-shadow: 0 0 20px rgba(255, 255, 255, 1); /* shadow akhir */
+        }
+    }
+
+    .cover_box.active-popup {
+        transform: scale(1); /* tampilkan popup */
+        opacity: 1; /* full opacity */
+    }
+
+    .cover_box.active {
+        height: 520px; /* tinggi bertambah saat aktif register */
+    }
+
+    .cover_box .form-box {
+        width: 100%; /* lebar penuh */
+        padding: 40px; /* padding */
+    }
+
+    .form-box.login {
+        opacity: 1; /* tampil */
+        pointer-events: auto; /* aktif klik */
+        transition: opacity 0.5s ease, transform 0.5s ease; /* transisi */
+        transform: translateX(0); /* posisi normal */
+        position: relative; /* posisi relatif */
+        z-index: 5; /* lapisan */
+      }  
+
+    .cover_box .form-box.login {
+        transition: transform .5s ease; /* transisi */
+        transform: translateX(0); /* posisi normal */
+    }
+
+    .cover_box.active .form-box.login {
+        opacity: 0; /* sembunyi */
+        pointer-events: none; /* nonaktif klik */
+        transform: translateX(-100%); /* geser ke kiri */
+    }
+
+    .cover_box .form-box.register {
+        position: absolute; /* absolut */
+        transition: opacity 0.5s ease, transform 0.5s ease; /* transisi */
+        transform: translateX(100%); /* geser ke kanan */
+        opacity: 0; /* transparan */
+        pointer-events: none; /* nonaktif */
+        top: 0; /* atas 0 */
+        left: 0; /* kiri 0 */
+        width: 100%; /* lebar penuh */
+        z-index: 10; /* lapisan atas */
+    }
+
+    .cover_box.active .form-box.register {
+        transition: transform .50s ease; /* transisi */
+        transform: translateX(0); /* kembali ke posisi */
+    }
+
+    .cover_box .icon-close {
+        position: absolute; /* absolut */
+        top: 5px; /* jarak atas */
+        right: 5px; /* jarak kanan */
+        width: 45px; /* lebar */
+        height: 45px; /* tinggi */
+        background: #05190A; /* warna background */
+        font-size: 2em; /* ukuran font */
+        color: #fff; /* warna font */
+        display: flex; /* flex container */
+        justify-content: center; /* center hor */
+        align-items: center; /* center vert */
+        border-radius: 50%; /* lingkaran */
+        z-index: 1; /* lapisan */
+    }
+
+    .form-box h2 {
+        font-size: 2em; /* ukuran font */
+        color: #05190A; /* warna font */
+        text-align: center; /* center */
+    }
+
+    .input-box {
+        position: relative; /* relatif */
+        width: 100%; /* lebar penuh */
+        height: 50px; /* tinggi */
+        margin: 30px 0; /* margin vertikal */
+    }
+
+    .input-box label {
+        position: absolute; /* absolut */
+        top: 50%; /* tengah vertikal */
+        left: 10px; /* jarak kiri */
+        transform: translateY(-50%); /* center vertikal */
+        font-size: 1em; /* ukuran font */
+        color: #05190A; /* warna font */
+        font-weight: 500; /* ketebalan */
+        pointer-events: none; /* tidak bisa klik */
+        transition: .5s; /* transisi */
+    }
+
+    .input-box input:focus~label,
+    .input-box input:valid~label {
+        top: -10px; /* label naik saat input fokus/valid */
+    }
+
+    .input-box input {
+        width: 100%; /* lebar penuh */
+        height: 100%; /* tinggi penuh */
+        background: transparent; /* transparan */
+        border: 1px solid #05190A; /* border */
+        border-radius: 10px; /* sudut membulat */
+        outline: none; /* hilangkan outline */
+        font-size: 1em; /* ukuran font */
+        color: #05190A; /* warna font */
+        font-weight: 600; /* ketebalan */
+        padding: 0 35px 0 5px; /* padding */
+    }
+
+    .input-box .icon {
+        position: absolute; /* absolut */
+        right: 8px; /* jarak kanan */
+        font-size: 1.2em; /* ukuran font */
+        color: #05190A; /* warna font */
+        line-height: 57px; /* tinggi baris */
+    }
+
+    .remember-forgot {
+        font-size: .9em; /* ukuran font */
+        color: #05190A; /* warna font */
+        font-weight: 500; /* ketebalan */
+        margin: -15px 0 15px; /* margin */
+        display: flex; /* flex container */
+        justify-content: space-between; /* space antar item */
+    }
+
+    .remember-forgot label input {
+        accent-color: #05190A; /* warna checkbox */
+        margin-right: 3px; /* margin kanan */
+    }
+
+    .remember-forgot a {
+        color: #d2d8d3; /* warna link */
+        text-decoration: underline; /* garis bawah */
+    }
+
+    .remember-forgot a:hover {
+        text-decoration: underline; /* garis bawah saat hover */
+    }
+
+    .btn {
+        width: 100%; /* lebar penuh */
+        height: 45px; /* tinggi */
+        background-color: rgba(88, 82, 53, 0.9); /* warna background */
+        border: none; /* tanpa border */
+        outline: none; /* hilangkan outline */
+        border-radius: 100px; /* sudut bulat */
+        cursor: pointer; /* pointer cursor */
+        font-size: 1em; /* ukuran font */
+        color: #fff; /* warna teks */
+        font-weight: 500; /* ketebalan */
+    }
+
+    .login-register {
+        font-size: .9em; /* ukuran font */
+        color: #c9c8c8; /* warna font */
+        text-align: center; /* center */
+        font-weight: 500; /* ketebalan */
+        margin: 25px 0 10px; /* margin */
+    }
+
+    .login-register p a {
+        color: #9a9a9a; /* warna link */
+        text-decoration: none; /* tanpa garis bawah */
+        font-weight: 600; /* ketebalan */
+    }
+
+    .login-register p a:hover {
+        text-decoration: underline; /* garis bawah saat hover */
+    }
+      
+    .cover_box.active .form-box.register {
+        opacity: 1; /* tampilkan form register */
+        pointer-events: auto; /* aktif klik */
+        transform: translateX(0); /* posisi normal */
+      }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="navigation">
+      <input type="checkbox" id="check" /> <!-- checkbox untuk toggle menu -->
+      <label for="check" class="check_btn"><i class="fas fa-bars"></i></label> <!-- tombol hamburger -->
+      <label class="logo">Biblioffee</label> <!-- logo -->
+      <ul>
+        <li><a href="#" class="active">Beranda</a></li> <!-- menu aktif -->
+        <li><a href="#">Tentang</a></li>
+        <li><a href="#">Kontak</a></li>
+        <li><a href="#" class="btnLogin-popup">Masuk</a></li> <!-- tombol login -->
+      </ul>
+    </div>
+  </header>
+
+  <div class="cover_box">
+    <div class="form-box login">
+      <span class="icon-close"><i class="fas fa-times"></i></span> <!-- tombol tutup popup -->
+      <h2>Masuk</h2>
+      <form action="#">
+        <div class="input-box">
+          <input type="text" required />
+          <label>Nama Pengguna</label>
+          <i class="fas fa-user icon"></i>
+        </div>
+        <div class="input-box">
+          <input type="password" required />
+          <label>Kata Sandi</label>
+          <i class="fas fa-lock icon"></i>
+        </div>
+        <div class="remember-forgot">
+          <label><input type="checkbox" /> Ingat saya</label>
+          <a href="#">Lupa kata sandi?</a>
+        </div>
+        <button type="submit" class="btn">Masuk</button>
+        <div class="login-register">
+          <p>Belum punya akun? <a href="#" class="register-link">Daftar</a></p>
+        </div>
+      </form>
+    </div>
+    <div class="form-box register">
+      <span class="icon-close"><i class="fas fa-times"></i></span> <!-- tombol tutup popup -->
+      <h2>Daftar</h2>
+      <form action="#">
+        <div class="input-box">
+          <input type="text" required />
+          <label>Nama Pengguna</label>
+          <i class="fas fa-user icon"></i>
+        </div>
+        <div class="input-box">
+          <input type="email" required />
+          <label>Email</label>
+          <i class="fas fa-envelope icon"></i>
+        </div>
+        <div class="input-box">
+          <input type="password" required />
+          <label>Kata Sandi</label>
+          <i class="fas fa-lock icon"></i>
+        </div>
+        <button type="submit" class="btn">Daftar</button>
+        <div class="login-register">
+          <p>Sudah punya akun? <a href="#" class="login-link">Masuk</a></p>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <script>
+    const loginPopupBtn = document.querySelector('.btnLogin-popup'); // tombol masuk
+    const coverBox = document.querySelector('.cover_box'); // popup utama
+    const iconClose = document.querySelectorAll('.icon-close'); // tombol tutup popup
+    const registerLink = document.querySelector('.register-link'); // link daftar di login
+    const loginLink = document.querySelector('.login-link'); // link masuk di register
+    const loginForm = document.querySelector('.form-box.login'); // form login
+    const registerForm = document.querySelector('.form-box.register'); // form register
+
+    // klik tombol login, tampilkan popup
+    loginPopupBtn.addEventListener('click', () => {
+      coverBox.classList.add('active-popup'); // tampilkan popup
+      coverBox.classList.remove('active'); // pastikan form login aktif
+      loginForm.style.opacity = '1'; // tampilkan form login
+      registerForm.style.opacity = '0'; // sembunyikan form register
+    });
+
+    // klik tombol close, sembunyikan popup
+    iconClose.forEach((icon) => {
+      icon.addEventListener('click', () => {
+        coverBox.classList.remove('active-popup'); // sembunyikan popup
+      });
+    });
+
+    // klik link daftar, pindah ke form register
+    registerLink.addEventListener('click', (e) => {
+      e.preventDefault(); // cegah default
+      coverBox.classList.add('active'); // aktifkan mode register
+    });
+
+    // klik link masuk, pindah ke form login
+    loginLink.addEventListener('click', (e) => {
+      e.preventDefault(); // cegah default
+      coverBox.classList.remove('active'); // kembali ke login
+    });
+  </script>
+</body>
+</html>
